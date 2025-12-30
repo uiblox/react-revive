@@ -1,0 +1,28 @@
+{
+  "products": [
+    {
+      "id": 10001,
+      "name": "Basics to Advanced React",
+      "price": 29,
+      "in_stock": true
+    },
+    {
+      "id": 10002,
+      "name": "Basics to Advanced Node",
+      "price": 20,
+      "in_stock": true
+    },
+    {
+      "id": 10003,
+      "name": "Basics to Advanced Java",
+      "price": 40,
+      "in_stock": true
+    },
+    {
+      "id": 10001,
+      "name": "Basics to Advanced AWS",
+      "price": 50,
+      "in_stock": false
+    }
+  ]
+}
