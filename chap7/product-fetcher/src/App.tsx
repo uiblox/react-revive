@@ -1,43 +1,34 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { type Book } from "./ProductTypes";
 
 function App() {
   const [products, setProducts] = useState<Book[] | []>([]);
+  const [url, setUrl] = useState("http://localhost:8000/products");
 
-  const fetchData = (params?: string) => {
-    const url = params
-      ? `http://localhost:8000/products${params}`
-      : "http://localhost:8000/products";
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => setProducts(data));
-  };
+  const fetchData = useCallback(async () => {
+    const response = await fetch(url);
+    const data = await response.json();
+    setProducts(data);
+  }, [url]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
-  //localhost:8000/products?in_stock=true
-  const handleBookList = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const action = (e.target as HTMLElement).textContent;
-
-    if (action === "In Stock") {
-      const result = products.filter((product) => {
-        if (product.in_stock === true) return product;
-      });
-      fetchData("?in_stock=true");
-      console.log("testing", result);
-    }
-    if (action === "All") {
-      fetchData();
-    }
-  };
   return (
     <>
       <div className="products-layout">
         <div className="btn-wrapper">
-          <button onClick={(e) => handleBookList(e)}>All</button>
-          <button onClick={(e) => handleBookList(e)}>In Stock</button>
+          <button onClick={() => setUrl("http://localhost:8000/products")}>
+            All
+          </button>
+          <button
+            onClick={() =>
+              setUrl("http://localhost:8000/products?in_stock=true")
+            }
+          >
+            In Stock
+          </button>
         </div>
         <ul className="product-list">
           {products.map((product) => {
