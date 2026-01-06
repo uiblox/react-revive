@@ -6,9 +6,16 @@ export const useFetch = (url: string) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(url);
-      const data = await response.json();
-      setData(data);
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        const data = await response.json();
+        setData(data);
+      } catch (error) {
+        console.log(error);
+      }
     };
     fetchData();
   }, [url]);
