@@ -5,7 +5,7 @@ import { type Book } from "./ProductTypes";
 function App() {
   // const [products, setProducts] = useState<Book[] | []>([]);
   const [url, setUrl] = useState("http://localhost:8000/products");
-  const { data } = useFetch(url);
+  const { data, error, loading } = useFetch(url);
   console.log(data);
 
   return (
@@ -23,7 +23,9 @@ function App() {
             In Stock
           </button>
         </div>
-        <ul className="product-list">
+        <div className="product-list">
+          {loading && <div>Loading...</div>}
+          {error && <div>{`-_- An error occurred: ${error}`}</div>}
           {data
             ? data.map((product: Book) => {
                 return (
@@ -38,8 +40,8 @@ function App() {
                   </div>
                 );
               })
-            : "No Products to list"}
-        </ul>
+            : ""}
+        </div>
       </div>
     </>
   );
