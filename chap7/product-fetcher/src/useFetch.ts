@@ -7,10 +7,12 @@ export const useFetch = (url: string) => {
   const [error, setError] = useState<null | string>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(url);
+        const response = await fetch(url, { signal: controller.signal });
         if (!response.ok) {
           setError(response.statusText);
           throw new Error(response.statusText);
@@ -26,7 +28,12 @@ export const useFetch = (url: string) => {
         setLoading(false);
       }
     };
+
     fetchData();
+
+    return () => {
+      controller.abort();
+    };
   }, [url]);
 
   return { data: data, error: error, loading: loading };
